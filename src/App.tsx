@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Shield, Zap, Database, Activity, AlertTriangle, Terminal } from 'lucide-react'
+import { Shield, Zap, Database, Activity, Terminal } from 'lucide-react'
 import './App.css'
 
 const ATTACK_LOGS = [
