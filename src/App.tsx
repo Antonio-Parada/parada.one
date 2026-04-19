@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Shield, Zap, Database, Activity, Terminal, Lock } from 'lucide-react'
+import { Shield, Database, Activity, Terminal, Lock } from 'lucide-react'
 import './App.css'
 
 const DEFENSE_VECTOR_LOGS = [
