@@ -1,38 +1,39 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Shield, Zap, Database, Activity, Terminal } from 'lucide-react'
+import { Shield, Zap, Database, Activity, Terminal, Lock } from 'lucide-react'
 import './App.css'
 
-const ATTACK_LOGS = [
-  "FAILED_HANDSHAKE: SSH-2.0-libssh_0.9.5 from 45.12.189.1",
-  "PROTOCOL_VIOLATION: Attempted access to /.env",
-  "NOISE_FILTERED: Bruteforce attempt detected from 192.168.1.1",
-  "SIGNAL_REJECTED: Malformed packet on port 443",
-  "ANOMALY_DETECTED: Unexpected latency peak in Node_04",
-  "SHIELD_ACTIVE: Layer 7 mitigation triggered",
-  "REPARENTING: Redirecting stray signal to void",
-  "EQUILIBRIUM: Maintaining the quiet."
+const DEFENSE_VECTOR_LOGS = [
+  "INTRUSION_PREVENTED: CVE-2021-44228 (Log4j) JNDI lookup blocked",
+  "SYSCALL_INTERCEPT: Non-privileged guest attempting 'p_ptrace' - REJECTED",
+  "PROTOCOL_SHIELD: Malformed HTTP/2 frame from 185.220.101.44 (TOR_EXIT)",
+  "TRAVERSAL_MITIGATED: Attempted access to /../../etc/shadow - VIRTUAL_VOID_REDIRECT",
+  "HANDSHAKE_DROPPED: SSH brute-force signature detected [User: root]",
+  "KERNEL_PROTECT: Stack smashing protection triggered in signal_handler.c",
+  "SIGNAL_ANALYSIS: Heuristic noise-to-signal ratio exceeds safety threshold",
+  "RESILIENCE_SYNC: ZFS RAID-Z2 pool scrubbing for immutable integrity",
+  "SOVEREIGN_GATE: IP 91.241.19.84 blacklisted via reputation_filter",
+  "EQUILIBRIUM: System state stabilized. The Quiet remains."
 ]
 
 function App() {
   const [logs, setLogs] = useState<string[]>([])
   const [uptime, setUptime] = useState(0)
-  const [load, setLoad] = useState([0.15, 0.12, 0.08])
+  const [load, setLoad] = useState([0.05, 0.08, 0.04])
   const scrollRef = useRef<HTMLDivElement>(null)
 
-  // Simulation of real-time telemetry
   useEffect(() => {
     const logInterval = setInterval(() => {
-      const newLog = `[${new Date().toLocaleTimeString()}] ${ATTACK_LOGS[Math.floor(Math.random() * ATTACK_LOGS.length)]}`
-      setLogs(prev => [...prev.slice(-15), newLog])
-    }, 2000)
+      const newLog = `[${new Date().toLocaleTimeString('en-GB')}] ${DEFENSE_VECTOR_LOGS[Math.floor(Math.random() * DEFENSE_VECTOR_LOGS.length)]}`
+      setLogs(prev => [...prev.slice(-20), newLog])
+    }, 2500)
 
     const uptimeInterval = setInterval(() => {
       setUptime(prev => prev + 1)
       setLoad([
-        0.10 + Math.random() * 0.1,
-        0.08 + Math.random() * 0.05,
-        0.05 + Math.random() * 0.03
+        0.04 + Math.random() * 0.04,
+        0.06 + Math.random() * 0.03,
+        0.03 + Math.random() * 0.02
       ])
     }, 1000)
 
@@ -54,15 +55,14 @@ function App() {
         <div className="status-dot"></div>
         <h1>PARADA<span>.ONE</span></h1>
         <div className="header-meta">
-          BUNKER_HEARTBEAT // NODE: PVE_CORE_01
+          BUNKER_HEARTBEAT // IDENTITY: GUEST@PARADA.ONE
         </div>
       </header>
 
       <main className="dashboard-grid">
-        {/* TELEMETRY BLOCK */}
         <section className="dashboard-item telemetry">
           <div className="item-header">
-            <Activity size={16} /> <span>LIVE_TELEMETRY</span>
+            <Activity size={14} /> <span>INFRASTRUCTURE_TELEMETRY</span>
           </div>
           <div className="telemetry-stats">
             <div className="stat">
@@ -70,44 +70,26 @@ function App() {
               <div className="value">{Math.floor(uptime / 3600)}h {Math.floor((uptime % 3600) / 60)}m {uptime % 60}s</div>
             </div>
             <div className="stat">
-              <label>SYSTEM_LOAD</label>
+              <label>LOAD_AVERAGE (K_V1)</label>
               <div className="value">{load[0].toFixed(2)}, {load[1].toFixed(2)}, {load[2].toFixed(2)}</div>
             </div>
             <div className="stat">
-              <label>RESILIENCE_LEVEL</label>
-              <div className="value" style={{color: 'var(--pixels-pink)'}}>OPTIMAL</div>
+              <label>THREAT_MITIGATION</label>
+              <div className="value" style={{color: 'var(--pixels-pink)'}}>ACTIVE_SHIELD</div>
             </div>
           </div>
         </section>
 
-        {/* ZFS STATUS BLOCK */}
-        <section className="dashboard-item zfs">
-          <div className="item-header">
-            <Database size={16} /> <span>ZFS_POOL_STATUS [RAID-Z2]</span>
-          </div>
-          <div className="zfs-pool">
-            {['DISK_0', 'DISK_1', 'DISK_2', 'DISK_3', 'DISK_4'].map(disk => (
-              <div key={disk} className="disk">
-                <div className="disk-icon active"></div>
-                <div className="disk-label">{disk}</div>
-                <div className="disk-status">ONLINE</div>
-              </div>
-            ))}
-          </div>
-          <div className="pool-meta">SCRUB_STATUS: FINISHED [0 ERRORS]</div>
-        </section>
-
-        {/* ATTACKER FEED (THE NOISE) */}
         <section className="dashboard-item logs">
           <div className="item-header">
-            <Shield size={16} /> <span>FILTERED_NOISE_FEED</span>
+            <Shield size={14} /> <span>KERNEL_DEFENSE_READOUT</span>
           </div>
           <div className="log-scroll" ref={scrollRef}>
-            <AnimatePresence>
+            <AnimatePresence initial={false}>
               {logs.map((log, i) => (
                 <motion.div 
                   key={i}
-                  initial={{ opacity: 0, x: -10 }}
+                  initial={{ opacity: 0, x: -5 }}
                   animate={{ opacity: 1, x: 0 }}
                   className="log-line"
                 >
@@ -118,30 +100,43 @@ function App() {
           </div>
         </section>
 
-        {/* ACTIVE PROTOCOLS */}
+        <section className="dashboard-item zfs">
+          <div className="item-header">
+            <Database size={14} /> <span>IMMUTABLE_STORAGE [ZFS_POOL]</span>
+          </div>
+          <div className="zfs-pool">
+            {['S_0', 'S_1', 'S_2', 'S_3', 'S_4'].map(disk => (
+              <div key={disk} className="disk">
+                <div className="disk-icon active"></div>
+                <div className="disk-label">{disk}</div>
+              </div>
+            ))}
+          </div>
+          <div className="pool-meta">INTEGRITY_CHECK: PASS [RAID-Z2]</div>
+        </section>
+
         <section className="dashboard-item protocols">
           <div className="item-header">
-             <Zap size={16} /> <span>SOVEREIGN_PROTOCOLS</span>
+             <Lock size={14} /> <span>SOVEREIGN_POLICY</span>
           </div>
           <div className="protocol-list">
-             <div className="protocol active"><span>AUTO_MITIGATE</span> <div className="status">ON</div></div>
-             <div className="protocol active"><span>ENCLAVE_SHIELD</span> <div className="status">ON</div></div>
-             <div className="protocol active"><span>THE_QUIET_LOCK</span> <div className="status">ON</div></div>
-             <div className="protocol inactive"><span>EXTERNAL_SYNC</span> <div className="status">OFF</div></div>
+             <div className="protocol active"><span>NO_GUEST_SYSCALLS</span> <div className="status">ON</div></div>
+             <div className="protocol active"><span>TRAFFIC_SCRUBBER</span> <div className="status">ON</div></div>
+             <div className="protocol active"><span>RESILIENCE_DOJO_LOCK</span> <div className="status">ON</div></div>
+             <div className="protocol active"><span>THE_QUIET_PROTOCOL</span> <div className="status">ON</div></div>
           </div>
         </section>
       </main>
 
       <footer className="one-footer">
         <div className="footer-left">
-           <Terminal size={12} /> <span>ROOT@PVE.LOCAL // ACCESS_RESTRICTED</span>
+           <Terminal size={12} /> <span>GUEST@PARADA.ONE // SESSION_READ_ONLY</span>
         </div>
         <div className="footer-right">
-           STABILITY_RESISTANCE: 100%
+           KERNEL_VERSION: PARADA_OS_0.1.4_STABLE
         </div>
       </footer>
 
-      {/* CRT SCANLINES */}
       <div className="crt-overlay"></div>
     </div>
   )
